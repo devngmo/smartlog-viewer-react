@@ -1,0 +1,24 @@
+.issue-item {
+    margin: 5px;
+    border-bottom: 1px solid #888;
+    padding: 10px;
+    text-align: start;
+}
+.issue-item.d {
+    color: #ddd;
+}
+
+.issue-item.d.show-data {
+    color: black;
+}
+
+.issue-item time {
+    font-size: 10pt;
+}
+
+.issue-item.e, .issue-item.exfail {
+    font-weight: bold;
+    color: red;
+    background-color: #fee;
+}
+
