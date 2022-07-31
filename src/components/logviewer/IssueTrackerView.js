@@ -3,6 +3,9 @@ import { Button, ListGroup, Nav, Navbar, NavItem } from 'react-bootstrap';
 import IssueItem from './IssueItem';
 import moment from 'moment';
 import './IssueTrackerView.css';
+
+const API_DOMAIN = 'http://192.168.1.5'
+
 class IssueTrackerView extends React.Component {
   constructor(props) {
     super(props);
@@ -15,7 +18,7 @@ class IssueTrackerView extends React.Component {
 
   reloadIssueList() {
     let ins = this;
-    fetch('http://10.71.44.149:8000/log/mw2')
+    fetch(API_DOMAIN + ':8000/log/mw2')
     .then(resp => resp.json())
     .then(data => {
       console.log(`fetched ${data.length} issues`);
