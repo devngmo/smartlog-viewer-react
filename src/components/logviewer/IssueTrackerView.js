@@ -4,7 +4,7 @@ import IssueItem from './IssueItem';
 import moment from 'moment';
 import './IssueTrackerView.css';
 
-const API_DOMAIN = 'http://192.168.1.5'
+const API_DOMAIN = 'http://127.0.0.1'
 
 class IssueTrackerView extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class IssueTrackerView extends React.Component {
 
   reloadIssueList() {
     let ins = this;
-    fetch(API_DOMAIN + ':8000/log/mw2')
+    fetch(API_DOMAIN + ':8000/log/iot')
     .then(resp => resp.json())
     .then(data => {
       console.log(`fetched ${data.length} issues`);
