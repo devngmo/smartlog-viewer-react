@@ -1,6 +1,14 @@
 import React from 'react';
 import './IssueItem.css';
 import Moment from 'react-moment';
+
+function beautyData(data) {
+    try {   
+        return JSON.stringify(data, null, 4);
+    }catch(err) {
+        return data;
+    }
+}
 class IssueItem extends React.Component {
     constructor(props) {
         super(props);
@@ -13,6 +21,9 @@ class IssueItem extends React.Component {
     toogleShowData() {
         this.setState({showData: !this.state.showData});
     }
+
+    
+
     render() {
         let data = '';
         if (this.state.showData) {
@@ -24,7 +35,7 @@ class IssueItem extends React.Component {
         <div className='msg'>
             {this.props.issue.tag} {this.props.issue.msg}            
         </div>
-        {data}
+        <div prep="code">{data}</div>
         <Moment date={this.props.issue.time} format="DD-MM-YYYY hh:mm:ss"></Moment>
       </div>;
     }
