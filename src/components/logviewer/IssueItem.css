@@ -4,6 +4,15 @@
     padding: 10px;
     text-align: start;
 }
+
+.issue-item .tag {
+    border: 1px solid #888;
+    border-radius: 6px;
+    padding: 4px 10px;
+    color: white;
+    background-color: #0059c5;    
+}
+
 .issue-item.d {
     color: #ddd;
 }

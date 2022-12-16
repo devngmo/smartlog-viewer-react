@@ -31,9 +31,10 @@ class IssueItem extends React.Component {
                 data = JSON.stringify(this.props.issue.data, null, 4);
             }
         }
-      return <div className={'issue-item ' + this.props.issue.type + (this.state.showData?' show-data':'')} onClick={() => this.toogleShowData()}>
+      return <div 
+        className={'issue-item ' + this.props.issue.v + (this.state.showData?' show-data':'')} onClick={() => this.toogleShowData()}>
         <div className='msg'>
-            {this.props.issue.tag} {this.props.issue.msg}            
+            <span className="tag">{this.props.issue.tag}</span> {this.props.issue.msg}            
         </div>
         <div prep="code">{data}</div>
         <Moment date={this.props.issue.time} format="DD-MM-YYYY hh:mm:ss"></Moment>

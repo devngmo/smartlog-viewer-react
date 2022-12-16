@@ -3,8 +3,10 @@ import { Button, ListGroup, Nav, Navbar, NavItem } from 'react-bootstrap';
 import IssueItem from './IssueItem';
 import moment from 'moment';
 import './IssueTrackerView.css';
+import { LogAPI } from '../../api/logapi';
+import LogFilter from './LogFilter';
 
-const API_DOMAIN = 'http://127.0.0.1'
+const APP_ID = 'odm-react';
 
 class IssueTrackerView extends React.Component {
   constructor(props) {
@@ -12,17 +14,17 @@ class IssueTrackerView extends React.Component {
     this.state = {
       fullLog: [],
       issues: [],
-      minTime : moment('2020-01-01')
+      minTime : moment('2020-01-01'),
+      filterTags: [],
+      filterVerboses: ['i', 'd', 'w', 'e'],
     };
   }
 
   reloadIssueList() {
     let ins = this;
-    fetch(API_DOMAIN + ':8000/log/iot')
-    .then(resp => resp.json())
-    .then(data => {
-      console.log(`fetched ${data.length} issues`);
-      console.log(data);
+    LogAPI.getAllLog(APP_ID, (data) => {
+      //console.log(`fetched ${data.length} issues`);
+      //console.log(data);
       ins.state.fullLog = data;
       ins.applyFilter();
     });
@@ -34,22 +36,23 @@ class IssueTrackerView extends React.Component {
     ins.state.fullLog.forEach(x => {
       let m2 = moment(x.time);
       let duration = moment.duration(ins.state.minTime.diff(m2));
-      console.log(`duration from now with ${m2.format('DD/MM/YYYY hh:mm:ss')} is ${duration.get('seconds')} seconds`);
+      //console.log(`duration from now with ${m2.format('DD/MM/YYYY hh:mm:ss')} is ${duration.get('seconds')} seconds`);
       if (m2.isAfter(ins.state.minTime)) {
         issues.push(x);
       }
     });
-    console.log(`filtered ${issues.length} entries`);
+    //console.log(`filtered ${issues.length} entries`);
     ins.setState({      
       issues: issues
     });
   }
 
   componentDidMount() {
+    console.log("ITV: mount");
     this.reloadIssueList();
-    setInterval(function() {
-      this.reloadIssueList();
-    }.bind(this), 10000);
+    // setInterval(function() {
+    //   this.reloadIssueList();
+    // }.bind(this), 10000);
   }
 
   cutLog() {
@@ -58,20 +61,44 @@ class IssueTrackerView extends React.Component {
     });
     this.reloadIssueList();
   }
-     
+
+  handleFilterTagsChanged(tags) {
+    this.setState({filterTags: tags});
+    console.log(`ITV: tags: ${this.state.filterTags.join('|')}`);
+  }
+
+  handleFilterVerboseFlagChanged(selectedVerboses) {
+    this.setState({filterVerboses: selectedVerboses});
+  }
+    
     render() {
-      var i = 0;
+      let filteredItems = [];
+      console.log(`tag length: ${this.state.filterTags.length} verboses length: ${this.state.filterVerboses.length}`);
+      for(let i = 0; i < this.state.issues.length; i++) {
+        let item = this.state.issues[i];
+        if (this.state.filterTags.length > 0 && !this.state.filterTags.includes(item.tag)) {
+          console.log(`ignore tags: ${item.tag}`);
+          continue;
+        }
+        if (this.state.filterVerboses.length > 0 && !this.state.filterVerboses.includes(item.v)) {
+          console.log(`ignore verbose: ${item.v}`);
+          continue;
+        }
+
+        //console.log(`show ${item.msg}`);
+        filteredItems.push(<IssueItem key={i} issue={item}></IssueItem>);
+      }
+      
       return <div className='itv-listview'>
-        <div>
-          <Button onClick={() => this.cutLog()}>Cut</Button>
-        </div>
+        <LogFilter
+          filterTags={this.state.filterTags}
+          verboseFlags={this.state.filterVerboses}
+          onFilterVerboseFlagChanged={(selectedVerboses) => this.handleFilterVerboseFlagChanged(selectedVerboses)}
+          onFilterTagsChanged={(tags) => this.handleFilterTagsChanged(tags)}
+        ></LogFilter>
+        {/* <div>{this.state.filterVerboses.join(',')}</div> */}
         <ListGroup>
-          {
-            
-            this.state.issues.map(item => (
-              <IssueItem key={i++} issue={item}></IssueItem>
-            ))
-          }
+          {filteredItems}
         </ListGroup>
       </div>;
     }
