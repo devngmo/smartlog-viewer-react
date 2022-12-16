@@ -15,7 +15,7 @@ class LogViewer extends Component {
     
     render() {
       return <IDE>
-        <IDESidebar></IDESidebar>
+        {/* <IDESidebar></IDESidebar> */}
         <IDEMainContent>
           <Tabs
             activeKey={this.state.tabID}
