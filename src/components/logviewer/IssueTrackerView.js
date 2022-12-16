@@ -96,7 +96,6 @@ class IssueTrackerView extends React.Component {
           onFilterVerboseFlagChanged={(selectedVerboses) => this.handleFilterVerboseFlagChanged(selectedVerboses)}
           onFilterTagsChanged={(tags) => this.handleFilterTagsChanged(tags)}
         ></LogFilter>
-        {/* <div>{this.state.filterVerboses.join(',')}</div> */}
         <ListGroup>
           {filteredItems}
         </ListGroup>
