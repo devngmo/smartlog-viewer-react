@@ -22,10 +22,10 @@ class LogViewer extends Component {
             onSelect={(k) => this.state.tabID=k}
           >
             <Tab eventKey="issue-tracker" title="Issue Tracker">
-              <IssueTrackerView></IssueTrackerView>
+              <IssueTrackerView active={this.state.tabID=='issue-tracker'} name="issue-only"></IssueTrackerView>
             </Tab>
             <Tab eventKey="full-log" title="Full Log">
-            <IssueTrackerView></IssueTrackerView>
+            <IssueTrackerView active={this.state.tabID=='full-log'} name="full-log"></IssueTrackerView>
             </Tab>
           </Tabs>
 
