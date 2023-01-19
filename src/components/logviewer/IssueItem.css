@@ -5,16 +5,26 @@
     text-align: start;
 }
 
-.issue-item .tag {
+.issue-item .mod {
     border: 1px solid #888;
     border-radius: 6px;
     padding: 4px 10px;
     color: white;
-    background-color: #0059c5;    
+    background-color: #0059c5;
+}
+.issue-item .tags div {
+    display: inline-block;
+    margin: 4px;
+    color: #ddd;
+    border: 1px solid #888;
+    border-radius: 6px;
+    padding: 4px 10px;
+    color: #888;
 }
 
+
 .issue-item.d {
-    color: #ddd;
+    color: #888;
 }
 
 .issue-item.d.show-data {
