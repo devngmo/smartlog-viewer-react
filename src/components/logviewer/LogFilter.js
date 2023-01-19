@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavbarBrand, NavItem, NavLink } from "react-bootstrap";
+import { NavbarBrand, NavItem, NavLink, Form } from "react-bootstrap";
 import EditFilterDialog from "./EditFilterDialog";
 import {v4 as uuidv4 } from 'uuid';
 
@@ -12,7 +12,7 @@ const initVerboseFlags = [
     { v: 'e', label: 'Error', selected: true },
 ];
 
-const LogFilter = ({filterTags, verboseFlags, onFilterTagsChanged, onFilterVerboseFlagChanged}) => {
+const LogFilter = ({selectedAppID, applications, filterTags, verboseFlags, onFilterTagsChanged, onFilterVerboseFlagChanged, onAppChanged}) => {
     const [savedFilters, setSavedFilters] = useState([]);
     const [verboseTogglers, setVerboseTogglers] = useState(initVerboseFlags);
     if (savedFilters.length === 0) {
@@ -92,11 +92,19 @@ const LogFilter = ({filterTags, verboseFlags, onFilterTagsChanged, onFilterVerbo
         );
     }
 
+    let appOptions = [];
+    for(let i = 0; i < applications.length; i++) {
+        appOptions.push(<option key={i} value={applications[i]}>{applications[i]}</option>);
+    }
+
     return (
         <div>
             <div className="log-filter navbar navbar-light">
                 <div className="container-fluid">
-                    <NavbarBrand>Tag Filters</NavbarBrand>
+                    <Form.Select value={selectedAppID} 
+                        style={{display:'inline-block', width: '150px'}}
+                        onChange={(e)=> onAppChanged(e.target.value)}
+                        >{appOptions}</Form.Select>
                     <form className="d-flex" style={{flex: 1}}>
                         <input  style={{flex: 1}} value={filterTags.join('|')} onChange={(e) => parseAndSaveTagsFromInput(e.target.value)}></input>
                         <a href="#" className="btn btn-primary" onClick={saveFilterTags}>Save</a>
